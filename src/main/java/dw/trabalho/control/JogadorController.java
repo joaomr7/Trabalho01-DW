@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonView;
 import dw.trabalho.model.Jogador;
 import dw.trabalho.repository.JogadorRepository;
 import dw.trabalho.view.View;
+import jakarta.validation.Valid;
 
 @RequestMapping(value = "jogador/")
 @RestController
@@ -61,7 +62,7 @@ public class JogadorController {
     // POST - criar jogador
     @JsonView(View.AdvancedJogador.class)
     @PostMapping("/")
-    public ResponseEntity<Jogador> createJogador(@RequestBody Jogador j) {
+    public ResponseEntity<Jogador> createJogador(@Valid @RequestBody Jogador j) {
         try {
             Jogador jogador = rep.save(new Jogador(j.getNome(), j.getEmail(), j.getDatanasc()));
             return new ResponseEntity<Jogador>(jogador, HttpStatus.OK);
@@ -73,7 +74,7 @@ public class JogadorController {
     // PUT - atualizar um jogador
     @JsonView(View.AdvancedJogador.class)
     @PutMapping("/{id}")
-    public ResponseEntity<Jogador> updateJogador(@PathVariable("id") long id, @RequestBody Jogador j) {
+    public ResponseEntity<Jogador> updateJogador(@PathVariable("id") long id, @Valid @RequestBody Jogador j) {
         Optional<Jogador> data = rep.findById(id);
 
         if (data.isPresent()) {

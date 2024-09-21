@@ -1,16 +1,25 @@
 package dw.trabalho.model;
 
 import jakarta.persistence.*;
-import java.util.Date;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
+import java.time.LocalDate;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonView;
 
+import dw.trabalho.validation.IdadeLimite;
 import dw.trabalho.view.View;
 
 @Entity
 @Table(name = "jogador")
 public class Jogador {
+
+    @Valid
+
     @JsonView(View.Base.class)
     @Id
     @GeneratedValue()
@@ -18,15 +27,20 @@ public class Jogador {
 
     @JsonView(View.Base.class)
     @Column(nullable = false, length = 60)
+    @NotBlank(message = "nome não pode ser vazio")
+    @Size(min = 2, max = 60, message = "nome deve ter entre 2 a 60 caracteres")
     private String nome;
 
     @JsonView(View.Base.class)
     @Column(nullable = false, length = 60)
+    @NotBlank(message = "e-mail não pode ser vazio")
+    @Email(message = "e-mail deve ser válido")
     private String email;
 
     @JsonView(View.Base.class)
     @Column(nullable = false)
-    private Date datanasc;
+    @IdadeLimite(idadeMinima = 16, message = "o jogador deve ter pelo menos 16 anos")
+    private LocalDate datanasc;
 
     @JsonView(View.AdvancedJogador.class)
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "jogador", cascade = CascadeType.ALL)
@@ -39,7 +53,7 @@ public class Jogador {
         this.id = id;
     }
 
-    public Jogador(String nome, String email, Date datanasc) {
+    public Jogador(String nome, String email, LocalDate datanasc) {
         this.nome = nome;
         this.email = email;
         this.datanasc = datanasc;
@@ -65,11 +79,11 @@ public class Jogador {
         this.email = email;
     }
 
-    public Date getDatanasc() {
+    public LocalDate getDatanasc() {
         return datanasc;
     }
 
-    public void setDatanasc(Date datanasc) {
+    public void setDatanasc(LocalDate datanasc) {
         this.datanasc = datanasc;
     }
 

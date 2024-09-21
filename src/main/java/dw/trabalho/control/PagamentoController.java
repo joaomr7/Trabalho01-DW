@@ -16,6 +16,7 @@ import dw.trabalho.model.Pagamento;
 import dw.trabalho.repository.JogadorRepository;
 import dw.trabalho.repository.PagamentoReposiory;
 import dw.trabalho.view.View;
+import jakarta.validation.Valid;
 
 @RequestMapping(value = "pagamento/")
 @RestController
@@ -67,7 +68,7 @@ public class PagamentoController {
     // POST - criar um artigo
     @JsonView(View.AdvancedPagamento.class)
     @PostMapping
-    public ResponseEntity<Pagamento> createPagamento(@RequestBody Pagamento ar) {
+    public ResponseEntity<Pagamento> createPagamento(@Valid @RequestBody Pagamento ar) {
         try {
             long jogador_id = ar.getJogador().getId();
             Optional<Jogador> data = jRep.findById(jogador_id);
@@ -86,7 +87,7 @@ public class PagamentoController {
     // PUT - atualizar um pagamento
     @JsonView(View.AdvancedPagamento.class)
     @PutMapping("/{id}")
-    public ResponseEntity<Pagamento> updatePagamento(@PathVariable("id") long id, @RequestBody Pagamento p) {
+    public ResponseEntity<Pagamento> updatePagamento(@PathVariable("id") long id, @Valid @RequestBody Pagamento p) {
         Optional<Pagamento> data = rep.findById(id);
 
         if (data.isPresent()) {

@@ -4,10 +4,16 @@ import com.fasterxml.jackson.annotation.JsonView;
 
 import dw.trabalho.view.View;
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Positive;
 
 @Entity
 @Table(name = "pagamento")
 public class Pagamento {
+    @Valid
+
     @JsonView(View.Base.class)
     @Id
     @GeneratedValue()
@@ -15,14 +21,18 @@ public class Pagamento {
 
     @JsonView(View.Base.class)
     @Column(nullable = false)
+    @Min(value = 1900, message = "o ano de pagamento deve ser maior que 1900")
     private int ano;
 
     @JsonView(View.Base.class)
     @Column(nullable = false)
+    @Min(value = 1, message = "o menor mês de pagamento deve ser 1")
+    @Max(value = 12, message = "o maior mês de pagamento deve ser 12")
     private int mes;
 
     @JsonView(View.Base.class)
     @Column(nullable = false)
+    @Positive(message = "o valor deve ser maior que 0")
     private float valor;
 
     @JsonView(View.AdvancedPagamento.class)
