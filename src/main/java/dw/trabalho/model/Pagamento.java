@@ -21,7 +21,7 @@ public class Pagamento {
 
     @JsonView(View.Base.class)
     @Column(nullable = false)
-    @Min(value = 1900, message = "o ano de pagamento deve ser maior que 1900")
+    @Min(value = 1900, message = "o ano de pagamento deve ser maior ou igual a 1900")
     private int ano;
 
     @JsonView(View.Base.class)
